@@ -3,10 +3,10 @@
 import mysql.connector
 from mysql_connection import get_connection
 
-name = '순두부'
-description = '순두부찌개 만드는 법'
+name = '오뎅탕'
+description = '오뎅탕 만드는 법'
 cook_time = 45
-directions = '물넣고 두부넣고 조개넣고 끓인다'
+directions = '물넣고 오뎅넣고 무넣고 끓인다'
 
 
 try:
@@ -18,9 +18,10 @@ try:
     query = '''insert into recipe
             (name,description,cook_time,directions)
             values
-            (%s,%s,%s,%s);'''
+            (%s,'오뎅탕 만드는 법',45,'물넣고 오뎅넣고 무넣고 끓인다');'''
 
-    record = (name,description,cook_time,directions)
+    # record = (name,description,cook_time,directions)
+    record = (name,)
     
     # 3. 커서를 가져온다
     cursor = connection.cursor()
