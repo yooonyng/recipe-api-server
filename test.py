@@ -5,6 +5,7 @@ from mysql_connection import get_connection
 
 name = '순두부'
 description = '순두부찌개 만드는 법'
+cook_time = 45
 directions = '물넣고 두부넣고 조개넣고 끓인다'
 
 
@@ -18,12 +19,14 @@ try:
             (name,description,cook_time,directions)
             values
             (%s,%s,%s,%s);'''
+
+    record = (name,description,cook_time,directions)
     
     # 3. 커서를 가져온다
     cursor = connection.cursor()
 
     # 4. 쿼리문을 커서를 이용해서 실행한다
-    cursor.execute(query)
+    cursor.execute(query,record)
 
     # 5. 커넥션을 커밋해줘야한다 -> DB에 영구적으로 반영하기
     connection.commit()
