@@ -7,6 +7,7 @@ api = Api(app)
 
 # 경로와 리소스(API 코드)를 연결한다.
 api.add_resource(RecipeListResource,'/recipes')
+api.add_resource(RecipeListResource,'/recipes/<int:recipe_id>')
 
 
 if __name__ == '__main__':
