@@ -9,7 +9,7 @@ class RecipeResource(Resource) :
     
     # 클라이언트로부터 /recipes/3 이런식으로 경로를 처리하므로
     # 숫자는 바뀌므로, 변수로 처리해준다.
-    def get(self,recipe_id) :
+    def get(self, recipe_id) :
 
         # 디비에서, recipe_id 에 들어있는 값에 해당되는
         # 데이터를 select 해온다.
@@ -56,45 +56,47 @@ class RecipeResource(Resource) :
         return {'result' : 'success' ,
                 'info' : result_list[0]}
 
-    # 데이터를 업데이트하는 API들은  put 함수를 사용한다.
-    def put(self,recipe_id):
+
+    # 데이터를 업데이트하는 API들은 put 함수를 사용한다.
+    def put(self, recipe_id) :
 
         # body에서 전달된 데이터를 처리
         data = request.get_json()
 
-        try:
-            # 데이터 insert
+        # 디비 업데이트 실행코드
+        try :
+            # 데이터 업데이트 
             # 1. DB에 연결
             connection = get_connection()
 
             # 2. 쿼리문 만들기
             query = '''update recipe
-                        set name = %s, description = %s, 
-                        cook_time = %s, directions = %s
-                        where id = %s;'''
-
-            record = (data['name'],data['description'],
-                    data['cook_time'],data['directions'],
-                    recipe_id)
+                    set name = %s , description = %s , 
+                    cook_time = %s , 
+                    directions = %s
+                    where id = %s ;'''
             
-            # 3. 커서를 가져온다
+            record = (data['name'], data['description'],
+                        data['cook_time'], data['directions'],
+                        recipe_id )
+
+            # 3. 커서를 가져온다.
             cursor = connection.cursor()
 
-            # 4. 쿼리문을 커서를 이용해서 실행한다
-            cursor.execute(query,record)
+            # 4. 쿼리문을 커서를 이용해서 실행한다.
+            cursor.execute(query, record)
 
-            # 5. 커넥션을 커밋해줘야한다 -> DB에 영구적으로 반영하기
+            # 5. 커넥션을 커밋해줘야 한다 => 디비에 영구적으로 반영하라는 뜻
             connection.commit()
 
             # 6. 자원 해제
             cursor.close()
             connection.close()
 
-
-        except mysql.connector.Error as e:
+        except mysql.connector.Error as e :
             print(e)
             cursor.close()
             connection.close()
-            return {'error':str(e)},503
+            return {'error' : str(e)}, 503
 
-        return {'result':'success'},200
+        return {'result' :'success'}, 200
