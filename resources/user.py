@@ -327,7 +327,3 @@ class UserLoginResource(Resource) :
 
 
 
-    
-
-
-
