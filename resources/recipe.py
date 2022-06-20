@@ -68,6 +68,7 @@ class RecipeListResource(Resource):
         try:
             connection = get_connection()
             query = '''select * from recipe
+                    where is_publish = 2
                     limit '''+offset+''','''+limit+''';'''
 
             # select문은 dictionary=True를 해준다
