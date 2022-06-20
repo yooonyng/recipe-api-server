@@ -159,6 +159,7 @@ from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
 import mysql.connector
+import datetime
 
 from email_validator import validate_email, EmailNotValidError
 
@@ -239,7 +240,8 @@ class UserRegisterResource(Resource) :
         # JWT 로 암호화 해서 보내준다.
         # 암호화 하는 방법
 
-        access_token = create_access_token(user_id)
+        access_token = create_access_token(user_id,
+                                           expires_delta=datetime.timedelta(minutes=1))
 
         return {"result":"success",
                 "access_token":access_token}, 200
@@ -319,7 +321,8 @@ class UserLoginResource(Resource) :
             return {'error' : '비밀번호가 맞지 않습니다.'}
 
         
-        access_token = create_access_token(user_info['id'])
+        access_token = create_access_token(user_info,
+                                           expires_delta=datetime.timedelta(minutes=1))
 
         return {"result":"success",
                 "access_token":access_token}, 200
