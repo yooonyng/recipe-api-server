@@ -44,8 +44,40 @@ class UserRegisterResource(Resource):
         print(hashed_password)
 
         # 5. 데이터베이스에 회원정보를 저장한다.
-        
+        try:
+            # 데이터 insert
+            # 1. DB에 연결
+            connection = get_connection()
 
-        
+            # 2. 쿼리문 만들기
+            query = '''insert into user
+                        (username,email,password)
+                        values
+                        (%s,%s,%s);'''
 
-        return
+            record = (data['username'],data['email'],hashed_password)
+            
+            # 3. 커서를 가져온다
+            cursor = connection.cursor()
+
+            # 4. 쿼리문을 커서를 이용해서 실행한다
+            cursor.execute(query,record)
+
+            # 5. 커넥션을 커밋해줘야한다 -> DB에 영구적으로 반영하기
+            connection.commit()
+
+            # 5-1. DB에 저장된 아이디값 가져오기
+            user_id = cursor.lastrowid
+
+            # 6. 자원 해제
+            cursor.close()
+            connection.close()
+
+
+        except mysql.connector.Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return {"error":str(e)}, 503
+
+        return {"result":"success","user_id":user_id}, 200
