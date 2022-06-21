@@ -154,7 +154,7 @@
 
 from http import HTTPStatus
 from flask import request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
@@ -328,5 +328,10 @@ class UserLoginResource(Resource) :
                 "access_token":access_token}, 200
 
 
+# 로그아웃 기능을 하는 클래스
+class UserLogoutResource(Resource):
 
+    @jwt_required() # header에 억세스 토큰이 있는 사람만 가능
+    def post(self):
+        return
 

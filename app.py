@@ -23,6 +23,7 @@ api.add_resource(RecipeResource,'/recipes/<int:recipe_id>')
 api.add_resource(RecipePublishResource,'/recipes/<int:recipe_id>/publish')
 api.add_resource(UserRegisterResource,'/users/register')
 api.add_resource(UserLoginResource,'/users/login')
+api.add_resource(UserLoginResource,'/users/logout')
 
 
 
